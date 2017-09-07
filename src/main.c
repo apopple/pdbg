@@ -330,37 +330,6 @@ static bool parse_options(int argc, char *argv[])
 	return opt_error;
 }
 
-/* Returns the sum of return codes. This can be used to count how many targets the callback was run on. */
-static int for_each_child_target(char *class, struct target *parent,
-				 int (*cb)(struct target *, uint32_t, uint64_t *, uint64_t *),
-				 uint64_t *arg1, uint64_t *arg2)
-{
-	int rc = 0;
-	struct target *target;
-	uint32_t index;
-	struct dt_node *dn;
-
-	for_each_class_target(class, target) {
-		struct dt_property *p;
-
-		dn = target->dn;
-		if (parent && dn->parent != parent->dn)
-			continue;
-
-		/* Search up the tree for an index */
-		for (index = dn->target->index; index == -1; dn = dn->parent);
-		assert(index != -1);
-
-		p = dt_find_property(dn, "status");
-		if (p && (!strcmp(p->prop, "disabled") || !strcmp(p->prop, "hidden")))
-			continue;
-
-		rc += cb(target, index, arg1, arg2);
-	}
-
-	return rc;
-}
-
 static int for_each_target(char *class, int (*cb)(struct target *, uint32_t, uint64_t *, uint64_t *), uint64_t *arg1, uint64_t *arg2)
 {
 	return for_each_child_target(class, NULL, cb, arg1, arg2);

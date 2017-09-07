@@ -4,10 +4,15 @@ GIT_SHA1 = `git --work-tree=$(top_srcdir) --git-dir=$(top_srcdir)/.git describe 
 
 include libfdt/Makefile.libfdt
 
-bin_PROGRAMS = pdbg
+bin_PROGRAMS = pdbg anton_scom
 
 ACLOCAL_AMFLAGS = -Im4
 AM_CFLAGS = -I$(top_srcdir)/ccan/array_size -Wall -Werror
+
+anton_scom_SOURCES = src/anton_scom.c
+anton_scom_LDADD = fake.dtb.o libpdbg.la libfdt.la -L.libs
+anton_scom_LDFLAGS = -Wl,--whole-archive,-lpdbg,--no-whole-archive
+anton_scom_CFLAGS = -I$(top_srcdir)/libpdbg -Wall -DGIT_SHA1=\"${GIT_SHA1}\"
 
 pdbg_SOURCES = \
 	src/main.c

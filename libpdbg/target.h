@@ -123,6 +123,10 @@ struct thread {
 };
 #define target_to_thread(x) container_of(x, struct thread, target)
 
+int for_each_child_target(char *class, struct target *parent,
+			  int (*cb)(struct target *, uint32_t, uint64_t *, uint64_t *),
+			  uint64_t *arg1, uint64_t *arg2);
+
 void targets_init(void *fdt);
 void target_probe(void);
 
