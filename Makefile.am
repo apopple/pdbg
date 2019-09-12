@@ -12,7 +12,8 @@ GIT_SHA1 ?= `git --work-tree=$(top_srcdir) --git-dir=$(top_srcdir)/.git describe
 libpdbg_tests = libpdbg_target_test \
 		libpdbg_probe_test1 \
 		libpdbg_probe_test2 \
-		libpdbg_probe_test3
+		libpdbg_probe_test3 \
+		libpdbg_p9_fapi_translation_test
 
 bin_PROGRAMS = pdbg
 check_PROGRAMS = $(libpdbg_tests) libpdbg_dtree_test \
@@ -255,6 +256,12 @@ libpdbg_dtree_test_SOURCES = src/tests/libpdbg_dtree_test.c
 libpdbg_dtree_test_CFLAGS = $(libpdbg_test_cflags)
 libpdbg_dtree_test_LDFLAGS = $(libpdbg_test_ldflags)
 libpdbg_dtree_test_LDADD = $(libpdbg_test_ldadd)
+
+libpdbg_p9_fapi_translation_test_SOURCES = src/tests/libpdbg_p9_fapi_translation_test.C \
+					   src/tests/p9_scominfo.C
+libpdbg_p9_fapi_translation_test_CFLAGS = $(libpdbg_test_cflags)
+libpdbg_p9_fapi_translation_test_LDFLAGS = $(libpdbg_test_ldflags)
+libpdbg_p9_fapi_translation_test_LDADD = $(libpdbg_test_ldadd)
 
 M4_V = $(M4_V_$(V))
 M4_V_ = $(M4_V_$(AM_DEFAULT_VERBOSITY))
